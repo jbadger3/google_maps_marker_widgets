@@ -1,7 +1,7 @@
 name: google_maps_marker_widgets
 description: "A new Flutter package project."
 repository: https://github.com/jbadger3/google_maps_marker_widgets
-version: 0.0.1
+version: 1.0.0
 
 
 environment:
