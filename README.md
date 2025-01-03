@@ -62,7 +62,7 @@ flutter pub add flutter_compass
 
 There are three main components to google_maps_marker_widgets.
 
-1. `MarkerWidget` - a widget which supplies the visual content for a `Marker` in `GoogleMap`.
+1. [MarkerWidget] - a widget which supplies the visual content for a [Marker] in [GoogleMap].
 
 ```dart
   final treeMarkerId = MarkerId('treeMarker');
@@ -71,7 +71,7 @@ There are three main components to google_maps_marker_widgets.
     child: Icon(Icons.park, color: Colors.green, size: 45),
   );
 ```
-2. `MarkerWidgetsController` - which manages `MarkerWidget`s and their associated `Markers` on a `GoogleMap`.
+2. [MarkerWidgetsController] - which manages [MarkerWidget]s and their associated [Marker]s on a [GoogleMap].
 
 You use a markerWidgetsController to add, remove, and update markers.
 
@@ -88,7 +88,7 @@ You use a markerWidgetsController to add, remove, and update markers.
     marker: treeMarker
   );
 ```
-Note the anchor was set to Offset(0.5, 0.5).  This ensures the marker is centered.  The default anchor is Offset(0.5, 1.0). 
+Note the [Marker.anchor] was set to Offset(0.5, 0.5).  This ensures the marker is centered.  The default anchor is Offset(0.5, 1.0). 
 
 ### Update the position of a marker
 When updating a marker, the position is automatically animated.
@@ -100,10 +100,10 @@ When updating a marker, the position is automatically animated.
   markerWidgetsController.updateMarker(marker: updatedMarker);
 ```
 
-3. `MarkerWidgets` - A wrapper widget for [GoogleMap].
-`MarkerWidgets` is the main entry point for using `google_maps_marker_widgets`.
+3. [MarkerWidgets] - A wrapper widget for [GoogleMap].
+[MarkerWidgets] is the main entry point for using `google_maps_marker_widgets`.
 
-Pass a `MarkerWidgetsController` to `MarkerWidgets` and in the  `builder` method create your `GoogleMap` passing in the set of supplied markers (Set<Marker>).
+Pass a [MarkerWidgetsController] to [MarkerWidgets] and in the  [MarkerWidgets.builder] method create your [GoogleMap] passing in the set of supplied markers.
 
 ```dart
   ...
