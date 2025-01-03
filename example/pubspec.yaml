@@ -13,8 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   
   google_maps_marker_widgets: 
-    git:
-      url: https://github.com/jbadger3/google_maps_marker_widgets.git
+    path: ../
 
   flutter_compass: ^0.8.1
   geolocator: ^13.0.2

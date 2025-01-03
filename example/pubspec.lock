@@ -219,11 +219,9 @@ packages:
   google_maps_marker_widgets:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "656568b8c1a3fc9f55b33b9247d7f27342d8d3cb"
-      url: "https://github.com/jbadger3/google_maps_marker_widgets.git"
-    source: git
+      path: ".."
+      relative: true
+    source: path
     version: "0.0.1"
   html:
     dependency: transitive

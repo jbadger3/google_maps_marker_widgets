@@ -60,13 +60,69 @@ flutter pub add flutter_compass
 
 ## Usage
 
+There are three main components to google_maps_marker_widgets.
 
-1. Make a `MarkerWidgetsController`.
+1. `MarkerWidget` - a widget which supplies the visual content for a `Marker` in `GoogleMap`.
+
 ```dart
-  final myWidgetsController = MarkerWidgetsController();
+  final treeMarkerId = MarkerId('treeMarker');
+  final treeMarkerWidget = MarkerWidget(
+    markerId: treeMarkerId,
+    child: Icon(Icons.park, color: Colors.green, size: 45),
+  );
+```
+2. `MarkerWidgetsController` - which manages `MarkerWidget`s and their associated `Markers` on a `GoogleMap`.
+
+You use a markerWidgetsController to add, remove, and update markers.
+
+### create a controller and add a marker
+```dart
+  final markerWidgetsController = MarkerWidgetsController();
+  
+  final treeMarker = Marker(
+            markerId: treeMarkerId,
+            anchor: Offset(0.5, 0.5),
+            position: LatLng(37, -108));
+  markerWidgetsController.addMarkerWidget(
+    markerWidget: treeMarkerWidget,
+    marker: treeMarker
+  );
+```
+Note the anchor was set to Offset(0.5, 0.5).  This ensures the marker is centered.  The default anchor is Offset(0.5, 1.0). 
+
+### Update the position of a marker
+When updating a marker, the position is automatically animated.
+
+```dart
+  final treeMarker = markerWidgetsController.markerForId(treeMarkerId)!;
+  final newPosition = LatLng(33, -105);
+  final updatedMarker = treeMarker.copyWith(positionParam: newPosition);
+  markerWidgetsController.updateMarker(marker: updatedMarker);
 ```
 
-2. Add 
+3. `MarkerWidgets` - A wrapper widget for [GoogleMap].
+`MarkerWidgets` is the main entry point for using `google_maps_marker_widgets`.
+
+Pass a `MarkerWidgetsController` to `MarkerWidgets` and in the  `builder` method create your `GoogleMap` passing in the set of supplied markers (Set<Marker>).
+
+```dart
+  ...
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: MarkerWidgets(
+        markerWidgetsController: _markerWidgetsController,
+        builder: (context, markers) => GoogleMap(
+          initialCameraPosition:
+              CameraPosition(target: LatLng(41.8, -99.65), zoom: 4),
+          markers: markers,
+        ),
+      ),
+    );
+  }
+
+```
+
 
 ### Full example
 

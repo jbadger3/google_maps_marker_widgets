@@ -5,34 +5,26 @@ import 'marker_widget.dart';
 
 ///Manages [MarkerWidget]s and associated [Marker]s on a [GoogleMap].
 ///
-class MarkerWidgetsController extends ChangeNotifier {
+class MarkerWidgetsController {
   double pixelRatio = 1.0;
   final Map<MarkerId, MarkerWidget> _markerWidgets = {};
   final Map<MarkerId, Marker> _markers = {};
   final Map<MarkerId, AnimationController> _markerAnimationControllers = {};
 
-  GoogleMapController? googleMapController;
-  CameraPosition? cameraPosition;
+  ///The list of [MarkerId]s being tracked.
+  List<MarkerId> get markerIds => _markers.keys.toList();
 
-  ///Set of [Marker]s to display on [GoogleMap].
+  ///A listenable containing the set of [Marker]s to display on [GoogleMap].
   ValueNotifier<Set<Marker>> markers = ValueNotifier<Set<Marker>>({});
 
-  ///[MarkerWidget]s currently being displayed and tracked.
-  List<MarkerWidget> markerWidgets() {
-    return _markerWidgets.values.toList();
-  }
+  ///A listenable containing the list of [MarkerWidget]s currently being displayed and tracked.
+  ValueNotifier<List<MarkerWidget>> markerWidgets =
+      ValueNotifier<List<MarkerWidget>>([]);
 
-  ///Callback for setting the [googleMapController].
-  void onMapCreated(GoogleMapController controller) {
-    googleMapController = controller;
-  }
-
-  ///Callback for updating the [cameraPosition].
-  void onCameraMove(CameraPosition newCameraPosition) {
-    cameraPosition = newCameraPosition;
-  }
-
-  void addDeviceMarker(
+  ///Adds a location puck for the device at [initialPosition] to the [GoogleMap].
+  ///
+  ///*Note* the [MarkerId] for the location puck is 'device'.
+  void addDeviceLocationPuck(
       {LatLng initialPosition = const LatLng(0, 0),
       LocationPuck locationPuck = const LocationPuck()}) {
     final markerId = MarkerId('device');
@@ -52,18 +44,30 @@ class MarkerWidgetsController extends ChangeNotifier {
   ///
   ///*Note* [markerWidget] and [marker] should have the same [MarkerId]!
   void addMarkerWidget(
-      {required MarkerWidget markerWidget, required Marker marker}) async {
+      {required MarkerWidget markerWidget, required Marker marker}) {
     final markerId = marker.markerId;
     assert(!_markerWidgets.containsKey(markerId),
         'Marker $markerId already exists! Use updateMarkerWidget indstead.');
     assert(markerWidget.markerId == marker.markerId,
         'MarkerWidget and Marker do not have the same MarkerId!');
     _markerWidgets[markerId] = markerWidget;
+    final newMarkerWidgets = _markerWidgets.values.toList();
+    markerWidgets.value = newMarkerWidgets;
+
     _markers[markerId] = marker;
     final newSet = <Marker>{};
     newSet.addAll(_markers.values);
     markers.value = newSet;
-    notifyListeners();
+  }
+
+  ///Removes the [Marker] and [MarkerWidget] associated with [markerId] from the [GoogleMap].
+  void removeMarker(MarkerId markerId) {
+    assert(_markers.keys.contains(markerId),
+        'MarkerId: ${markerId.toString()} not found in tracked markers!');
+    assert(_markerWidgets.keys.contains(markerId),
+        'MarkerId: ${markerId.toString()} not found in marker widgets!');
+    _markers.remove(markerId);
+    _markerWidgets.remove(markerId);
   }
 
   ///Returns the [Marker] associated with [markerId].
@@ -96,7 +100,7 @@ class MarkerWidgetsController extends ChangeNotifier {
 
   ///Updates a [marker] on [GoogleMap].
   ///
-  ///By default changes in latitude and longitude will be [animated] using a default [duration] of
+  ///By default changes in latitude and longitude will be [animated] using [curve] `Curves.easeInOutCubic` with a [duration] of
   ///1000 millisecons.
   void updateMarker(Marker marker,
       {bool animated = true,
@@ -109,7 +113,7 @@ class MarkerWidgetsController extends ChangeNotifier {
     final oldLatLang = oldMarker.position;
     final newLatLang = marker.position;
 
-    if (animated) {
+    if (animated && _markerAnimationControllers[marker.markerId] != null) {
       final animationController = _markerAnimationControllers[marker.markerId]!;
       animationController.duration = duration;
       final animation = animationController.drive(CurveTween(curve: curve));
