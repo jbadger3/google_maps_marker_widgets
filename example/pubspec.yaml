@@ -1,22 +1,29 @@
-name: google_maps_marker_widgets
-description: "A new Flutter package project."
-repository: https://github.com/jbadger3/google_maps_marker_widgets
-version: 0.0.1
-
+name: example
+description: "An detailed example of how to use google_maps_marker_widgets"
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
 
 environment:
   sdk: ^3.6.0
-  flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  
+  google_maps_marker_widgets: 
+    git:
+      url: https://github.com/jbadger3/google_maps_marker_widgets.git
+
+  flutter_compass: ^0.8.1
+  geolocator: ^13.0.2
   google_maps_flutter: ^2.10.0
-  screenshot: ^3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   flutter_lints: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
@@ -25,18 +32,23 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
-  # To add assets to your package, add an assets section, like this:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-  #
-  # For details regarding assets in packages, see
-  # https://flutter.dev/to/asset-from-package
-  #
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
-  # To add custom fonts to your package, add a fonts section here,
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
@@ -53,5 +65,5 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  # For details regarding fonts in packages, see
-  # https://flutter.dev/to/font-from-package
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
