@@ -260,4 +260,6 @@ class _MyHomePageState extends State<MyHomePage> {
 If you find any bugs or want to help add features file an issue on [GitHub](https://github.com/jbadger3/google_maps_marker_widgets/issues).
 
 ## Author
-Developed by Jonthan Badger PharmD, MS [DabblingBadgerLLC](https://www.dabblingbadger.com)
+Developed by Jonthan Badger PharmD, MS
+
+[DabblingBadgerLLC](https://www.dabblingbadger.com)
