@@ -1,16 +1,26 @@
-# example
+# Google Maps Marker Widgets Example
 
-A new Flutter project.
+Demonstrates the core functionality of goog_maps_marker_widgets which includes animating marker positions and using a custom location puck.
 
-## Getting Started
+This example does **not** include a Google Maps API key.  
 
-This project is a starting point for a Flutter application.
+## For iOS
+ 1. Open the Runner.xcworkspace in XCode. (don't do it in VS Code.  It won't work.)
+ 2. Under the Runner folder right click and select 'New Empty File'.  
+ 3. Name the new file MAPS_API_KEY.txt.
+ 4. Paste in the contents of your Google Maps API key.  
+ 
+ You should be all set run from VS Code or using flutter run.
 
-A few resources to get you started if this is your first Flutter project:
+ The AppDelegate.swift has code to grab the key from your new file. 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+As an alternative you can edit AppDelegate.swift directly and replace the current code with the official instructions from [google_maps_flutter](https://pub.dev/packages/google_maps_flutter) using your API key.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## For Android
+  1. open android/local.properites
+  2. Add a new line to the file MAPS_API_KEY=your_key
+
+You should be all set.
+
+As an alternative edit the android/app/src/main/AndroidManifest.xml with the official instructions from [google_maps_flutter](https://pub.dev/packages/google_maps_flutter) using your API key.
+
