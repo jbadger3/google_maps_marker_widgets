@@ -12,8 +12,9 @@ A Flutter package for using widgets as markers in Google Maps.
 
 ## Screenshots
 
-![animated_markers](https://github.com/jbadger3/google_maps_marker_widgets/blob/main/gifs/animated_markers.gif?raw=true)
-
+| animated marker widgets | custom location puck |
+| --- | --- |
+| ![animated_markers](https://github.com/jbadger3/google_maps_marker_widgets/blob/main/images/animated_markers.gif?raw=true) | ![location_puck](https://github.com/jbadger3/google_maps_marker_widgets/blob/main/images/location_puck.png?raw=true) |
 
 ## Getting started
 
