@@ -12,7 +12,7 @@ A Flutter package for using widgets as markers in Google Maps.
 
 ## Screenshots
 
-![animated_markers](https://github.com/jbadger3/google_maps_marker_widgets/gifs/animated_markers.gif)
+![animated_markers](https://github.com/jbadger3/google_maps_marker_widgets/blob/main/gifs/animated_markers.gif)
 
 ## Getting started
 
