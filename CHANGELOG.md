@@ -1,3 +1,3 @@
 ## 0.0.1
 
-* Initial development release.
+* Initial development and release.
