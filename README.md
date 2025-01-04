@@ -88,10 +88,10 @@ You use a markerWidgetsController to add, remove, and update markers.
     marker: treeMarker
   );
 ```
-Note the [Marker.anchor] was set to Offset(0.5, 0.5).  This ensures the marker is centered.  The default anchor is Offset(0.5, 1.0). 
+Note the [Marker.anchor] was set to Offset(0.5, 0.5).  This ensures the marker is centered over its position.  The default anchor is Offset(0.5, 1.0). 
 
 ### Update the position of a marker
-When updating a marker, the position is automatically animated.
+When updating a marker, the position animated by default.  You can pass [animated] false
 
 ```dart
   final treeMarker = markerWidgetsController.markerForId(treeMarkerId)!;
@@ -173,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext conftext) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: MarkerWidgets(
         markerWidgetsController: _markerWidgetsController,
@@ -260,6 +260,6 @@ class _MyHomePageState extends State<MyHomePage> {
 If you find any bugs or want to help add features file an issue on [GitHub](https://github.com/jbadger3/google_maps_marker_widgets/issues).
 
 ## Author
-Developed by Jonthan Badger PharmD, MS
+Developed by Jonathan Badger PharmD, MS
 
 [DabblingBadgerLLC](https://www.dabblingbadger.com)

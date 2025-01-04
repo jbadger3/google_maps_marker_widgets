@@ -47,7 +47,7 @@ class MarkerWidgetsController {
       {required MarkerWidget markerWidget, required Marker marker}) {
     final markerId = marker.markerId;
     assert(!_markerWidgets.containsKey(markerId),
-        'Marker $markerId already exists! Use updateMarkerWidget indstead.');
+        'Marker $markerId already exists! Use updateMarkerWidget instead.');
     assert(markerWidget.markerId == marker.markerId,
         'MarkerWidget and Marker do not have the same MarkerId!');
     _markerWidgets[markerId] = markerWidget;
@@ -80,7 +80,7 @@ class MarkerWidgetsController {
   ///
   ///This method is called by [MarkerWidget] on the first build and shouldn't be
   ///called directly.
-  void addMarkerUpdateAnimationContoller(
+  void addMarkerUpdateAnimationController(
       AnimationController animationController, MarkerId markerId) {
     _markerAnimationControllers[markerId] = animationController;
   }
@@ -101,7 +101,7 @@ class MarkerWidgetsController {
   ///Updates a [marker] on [GoogleMap].
   ///
   ///By default changes in latitude and longitude will be [animated] using [curve] `Curves.easeInOutCubic` with a [duration] of
-  ///1000 millisecons.
+  ///1000 milliseconds.
   void updateMarker(Marker marker,
       {bool animated = true,
       Curve curve = Curves.easeInOutCubic,
@@ -126,10 +126,10 @@ class MarkerWidgetsController {
           final double lngStep =
               (newLatLang.longitude - oldLatLang.longitude) * animation.value +
                   oldLatLang.longitude;
-          final latlangStep = LatLng(latStep, lngStep);
+          final latLangStep = LatLng(latStep, lngStep);
 
           final markerStep =
-              _markers[markerId]!.copyWith(positionParam: latlangStep);
+              _markers[markerId]!.copyWith(positionParam: latLangStep);
           _markers[markerId] = markerStep;
           final newSet = <Marker>{};
           newSet.addAll(_markers.values

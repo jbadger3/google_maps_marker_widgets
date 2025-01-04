@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext conftext) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: MarkerWidgets(
         markerWidgetsController: _markerWidgetsController,
