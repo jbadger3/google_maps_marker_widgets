@@ -54,7 +54,7 @@ class _MarkerWidgetState extends State<MarkerWidget>
     pixelRatio = MediaQuery.of(context).devicePixelRatio;
     markerWidgetsController =
         InheritedMarkerWidgetsController.of(context).controller;
-    markerWidgetsController?.addMarkerUpdateAnimationController(
+    markerWidgetsController?.addMarkerAnimationController(
         _markerUpdateAnimationController, widget.markerId);
     Future.delayed(Duration.zero, () => updateMarkerWidgetsController());
     return RepaintBoundary(

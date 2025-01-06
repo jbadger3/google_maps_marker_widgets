@@ -6,7 +6,6 @@ import 'marker_widget.dart';
 ///Manages [MarkerWidget]s and associated [Marker]s on a [GoogleMap].
 ///
 class MarkerWidgetsController {
-  double pixelRatio = 1.0;
   final Map<MarkerId, MarkerWidget> _markerWidgets = {};
   final Map<MarkerId, Marker> _markers = {};
   final Map<MarkerId, AnimationController> _markerAnimationControllers = {};
@@ -66,8 +65,24 @@ class MarkerWidgetsController {
         'MarkerId: ${markerId.toString()} not found in tracked markers!');
     assert(_markerWidgets.keys.contains(markerId),
         'MarkerId: ${markerId.toString()} not found in marker widgets!');
+
+    //stop any animations and remove the animation controller first
+    final animationController = _markerAnimationControllers[markerId];
+    if (animationController != null) {
+      animationController.stop();
+      animationController.dispose();
+      _markerAnimationControllers.remove(markerId);
+    }
+
     _markers.remove(markerId);
     _markerWidgets.remove(markerId);
+
+    final newMarkersSet = <Marker>{};
+    newMarkersSet.addAll(_markers.values);
+    markers.value = newMarkersSet;
+
+    final newMarkerWidgetsList = _markerWidgets.values.toList();
+    markerWidgets.value = newMarkerWidgetsList;
   }
 
   ///Returns the [Marker] associated with [markerId].
@@ -75,12 +90,22 @@ class MarkerWidgetsController {
     return _markers[markerId];
   }
 
+  ///Returns the [MarkerWidget] associated with [markerId].
+  MarkerWidget? markerWidgetForId(MarkerId markerId) {
+    return _markerWidgets[markerId];
+  }
+
+  ///Returns the [AnimationController] associated with [markerId].
+  AnimationController? animationControllerForId(MarkerId markerId) {
+    return _markerAnimationControllers[markerId];
+  }
+
   ///Adds the [animationController] used for updating marker positions on the GoogleMap to this
   ///controller.
   ///
   ///This method is called by [MarkerWidget] on the first build and shouldn't be
   ///called directly.
-  void addMarkerUpdateAnimationController(
+  void addMarkerAnimationController(
       AnimationController animationController, MarkerId markerId) {
     _markerAnimationControllers[markerId] = animationController;
   }
@@ -102,7 +127,7 @@ class MarkerWidgetsController {
   ///
   ///By default changes in latitude and longitude will be [animated] using [curve] `Curves.easeInOutCubic` with a [duration] of
   ///1000 milliseconds.
-  void updateMarker(Marker marker,
+  Future<void> updateMarker(Marker marker,
       {bool animated = true,
       Curve curve = Curves.easeInOutCubic,
       Duration duration = const Duration(milliseconds: 1000)}) async {
