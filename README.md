@@ -31,7 +31,7 @@ For foreground only access use
 
 ```xml
 <key>NSLocationWhenInUseUsageDescription</key>
-<string>This app to access your location when in use?</string>
+<string>Allow this app to access your location when in use?</string>
 ```
 
 For apps using monitoring location data in the background use
@@ -44,7 +44,7 @@ For apps using monitoring location data in the background use
 
 <details>
 <summary>Android</summary>
-For Android open app/src/main/AndroidManifest.xml and add one of following under the `manifest` tag.
+For Android open app/src/main/AndroidManifest.xml and add one of following under the manifest tag.
 
 ``` xml
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -60,9 +60,9 @@ flutter pub add flutter_compass
 
 ## Usage
 
-There are three main components to google_maps_marker_widgets.
+There are three main components to [google_maps_marker_widgets].
 
-1. [MarkerWidget] - a widget which supplies the visual content for a [Marker] in [GoogleMap].
+### 1. [MarkerWidget] - a widget which supplies the visual content for a [Marker] in [GoogleMap].
 
 ```dart
   final treeMarkerId = MarkerId('treeMarker');
@@ -71,11 +71,13 @@ There are three main components to google_maps_marker_widgets.
     child: Icon(Icons.park, color: Colors.green, size: 45),
   );
 ```
-2. [MarkerWidgetsController] - which manages [MarkerWidget]s and their associated [Marker]s on a [GoogleMap].
+
+### 2. [MarkerWidgetsController] - which manages [MarkerWidget]s and their associated [Marker]s on a [GoogleMap].
 
 You use a markerWidgetsController to add, remove, and update markers.
 
-### create a controller and add a marker
+**To create a controller and add a marker**
+
 ```dart
   final markerWidgetsController = MarkerWidgetsController();
   
@@ -88,19 +90,19 @@ You use a markerWidgetsController to add, remove, and update markers.
     marker: treeMarker
   );
 ```
-Note the [Marker.anchor] was set to Offset(0.5, 0.5).  This ensures the marker is centered over its position.  The default anchor is Offset(0.5, 1.0). 
+Note the [Marker.anchor] was set to `Offset(0.5, 0.5)`.  This ensures the marker is centered over its position.  The default anchor from [GoogleMap] is `Offset(0.5, 1.0)`. 
 
-### Update the position of a marker
-When updating a marker, the position animated by default.  You can pass [animated] false
-
+**To update the position of a marker**
 ```dart
   final treeMarker = markerWidgetsController.markerForId(treeMarkerId)!;
   final newPosition = LatLng(33, -105);
   final updatedMarker = treeMarker.copyWith(positionParam: newPosition);
   markerWidgetsController.updateMarker(marker: updatedMarker);
 ```
+When updating a marker, the position is animated by default.  You can pass [animated] false to disable this behavior.
 
-3. [MarkerWidgets] - A wrapper widget for [GoogleMap].
+### 3. [MarkerWidgets] - A wrapper widget for [GoogleMap].
+
 [MarkerWidgets] is the main entry point for using `google_maps_marker_widgets`.
 
 Pass a [MarkerWidgetsController] to [MarkerWidgets] and in the  [MarkerWidgets.builder] method create your [GoogleMap] passing in the set of supplied markers.
