@@ -45,6 +45,7 @@ class _MarkerWidgetState extends State<MarkerWidget>
 
   @override
   void dispose() {
+    _markerUpdateAnimationController.dispose();
     widget.animation?.removeListener(updateMarkerWidgetsController);
     super.dispose();
   }
