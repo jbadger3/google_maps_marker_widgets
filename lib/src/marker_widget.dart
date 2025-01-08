@@ -57,6 +57,7 @@ class _MarkerWidgetState extends State<MarkerWidget>
         InheritedMarkerWidgetsController.of(context).controller;
     markerWidgetsController?.addMarkerAnimationController(
         _markerUpdateAnimationController, widget.markerId);
+    final newthing = widget.child!.key = GlobalKey()
     Future.delayed(Duration.zero, () => updateMarkerWidgetsController());
     return RepaintBoundary(
         key: GlobalKey(),
