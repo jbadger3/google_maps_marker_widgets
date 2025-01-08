@@ -1,3 +1,7 @@
+## 1.0.1
+
+* Fixed a bug related to a missing dispose call for animation controllers in MarkerWidgets.  (see [issue #1](https://github.com/jbadger3/google_maps_marker_widgets/issues/1))
+
 ## 1.0.0
 
 * Initial development and release.
