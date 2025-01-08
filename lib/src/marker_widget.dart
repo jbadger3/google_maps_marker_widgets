@@ -59,6 +59,7 @@ class _MarkerWidgetState extends State<MarkerWidget>
         _markerUpdateAnimationController, widget.markerId);
     Future.delayed(Duration.zero, () => updateMarkerWidgetsController());
     return RepaintBoundary(
+        key: GlobalKey(),
         child:
             Screenshot(controller: screenshotController, child: widget.child));
   }
