@@ -54,9 +54,9 @@ class MarkerWidgetsController {
     markerWidgets.value = newMarkerWidgets;
 
     _markers[markerId] = marker;
-    final newSet = <Marker>{};
-    newSet.addAll(_markers.values);
-    markers.value = newSet;
+    //markers.value is not updated here as we want to wait for the widget
+    //to be rendered first.  The updateMarkerImage callback
+    //will take care of updating the map
   }
 
   ///Removes the [Marker] and [MarkerWidget] associated with [markerId] from the [GoogleMap].
