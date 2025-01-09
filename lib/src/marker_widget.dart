@@ -9,7 +9,11 @@ import 'inherited_marker_widgets_controller.dart';
 ///A widget that supplies the visual content for a [Marker] in [GoogleMap].
 class MarkerWidget extends StatefulWidget {
   const MarkerWidget(
-      {required this.markerId, this.animation, this.child, super.key});
+      {required this.markerId,
+      this.animation,
+      this.builder,
+      this.child,
+      super.key});
 
   ///[MarkerId] for the [Marker] this widget is associated with.
   final MarkerId markerId;
@@ -20,7 +24,20 @@ class MarkerWidget extends StatefulWidget {
   ///Use [MarkerWidgetsController.updateMarker] instead.
   final Animation? animation;
 
+  ///Builder to use when constructing the visual content with the associated [Marker].
+  ///
+  ///The builder method is useful for widgets that may not display their final content
+  ///the first time the widget is build.  Use the updateMarkerWidgetsController
+  /// function provided in the builder to signal the widget's appearance should be updated.
+  ///
+  ///**Note** Only one of [builder] or [child] can be passed in the constructor.
+  final Widget Function(
+      {BuildContext context,
+      Function() updateMarkerWidgetsController})? builder;
+
   ///Widget to use as the visual content with the associated [Marker]
+  ///
+  ///**Note** Only one of [builder] or [child] can be passed in the constructor.
   final Widget? child;
 
   @override
@@ -52,17 +69,35 @@ class _MarkerWidgetState extends State<MarkerWidget>
 
   @override
   Widget build(BuildContext context) {
+    final onlyOneOfBuilderOrChildNonNull =
+        (widget.builder == null && widget.child != null) ||
+            (widget.builder != null && widget.child == null);
+    assert(onlyOneOfBuilderOrChildNonNull,
+        'Exactly one of builder or child must be assigned in a MarkerWidget!');
     pixelRatio = MediaQuery.of(context).devicePixelRatio;
     markerWidgetsController =
         InheritedMarkerWidgetsController.of(context).controller;
     markerWidgetsController?.addMarkerAnimationController(
         _markerUpdateAnimationController, widget.markerId);
-    final newthing = widget.child!.key = GlobalKey();
     Future.delayed(Duration.zero, () => updateMarkerWidgetsController());
-    return RepaintBoundary(
-        key: GlobalKey(),
+    if (widget.builder == null && widget.child != null) {
+      return RepaintBoundary(
         child:
-            Screenshot(controller: screenshotController, child: widget.child));
+            Screenshot(controller: screenshotController, child: widget.child),
+      );
+    }
+    if (widget.builder != null && widget.child == null) {
+      return RepaintBoundary(
+        child: Screenshot(
+          controller: screenshotController,
+          child: widget.builder!(
+              context: context,
+              updateMarkerWidgetsController: updateMarkerWidgetsController),
+        ),
+      );
+    }
+    return ErrorWidget(
+        'Exactly one of builder or child must be assigned in a MarkerWidget!');
   }
 
   @override
@@ -75,6 +110,7 @@ class _MarkerWidgetState extends State<MarkerWidget>
   ///Updates the associated [Marker] with the [BitmapDescriptor] (image)
   ///of this widget.
   void updateMarkerWidgetsController() async {
+    print('update marker widget controller called');
     final bitmapDescriptor = await widgetImage();
     markerWidgetsController?.updateMarkerImage(
         bitmapDescriptor: bitmapDescriptor, markerId: widget.markerId);
@@ -83,7 +119,8 @@ class _MarkerWidgetState extends State<MarkerWidget>
   ///Returns the [BitmapDescriptor] (image) associated with this widget.
   Future<BitmapDescriptor?> widgetImage() async {
     try {
-      final imageBytes = await screenshotController.capture();
+      final imageBytes =
+          await screenshotController.capture(delay: Duration.zero);
       if (imageBytes != null) {
         return BitmapDescriptor.bytes(imageBytes, imagePixelRatio: pixelRatio);
       }
