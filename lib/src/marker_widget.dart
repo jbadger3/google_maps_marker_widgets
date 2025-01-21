@@ -32,8 +32,7 @@ class MarkerWidget extends StatefulWidget {
   ///
   ///**Note** Only one of [builder] or [child] can be passed in the constructor.
   final Widget Function(
-      {BuildContext context,
-      Function() updateMarkerWidgetsController})? builder;
+      BuildContext context, Function() updateMarkerWidgetsController)? builder;
 
   ///Widget to use as the visual content with the associated [Marker]
   ///
@@ -90,9 +89,7 @@ class _MarkerWidgetState extends State<MarkerWidget>
       return RepaintBoundary(
         child: Screenshot(
           controller: screenshotController,
-          child: widget.builder!(
-              context: context,
-              updateMarkerWidgetsController: updateMarkerWidgetsController),
+          child: widget.builder!(context, updateMarkerWidgetsController),
         ),
       );
     }
@@ -110,17 +107,17 @@ class _MarkerWidgetState extends State<MarkerWidget>
   ///Updates the associated [Marker] with the [BitmapDescriptor] (image)
   ///of this widget.
   void updateMarkerWidgetsController() async {
-    print('update marker widget controller called');
     final bitmapDescriptor = await widgetImage();
-    markerWidgetsController?.updateMarkerImage(
-        bitmapDescriptor: bitmapDescriptor, markerId: widget.markerId);
+    if (bitmapDescriptor != null) {
+      markerWidgetsController?.updateMarkerImage(
+          bitmapDescriptor: bitmapDescriptor, markerId: widget.markerId);
+    }
   }
 
   ///Returns the [BitmapDescriptor] (image) associated with this widget.
   Future<BitmapDescriptor?> widgetImage() async {
     try {
-      final imageBytes =
-          await screenshotController.capture(delay: Duration.zero);
+      final imageBytes = await screenshotController.capture();
       if (imageBytes != null) {
         return BitmapDescriptor.bytes(imageBytes, imagePixelRatio: pixelRatio);
       }
