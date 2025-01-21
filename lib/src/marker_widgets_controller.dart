@@ -49,14 +49,30 @@ class MarkerWidgetsController {
         'Marker $markerId already exists! Use updateMarkerWidget instead.');
     assert(markerWidget.markerId == marker.markerId,
         'MarkerWidget and Marker do not have the same MarkerId!');
-    _markerWidgets[markerId] = markerWidget;
-    final newMarkerWidgets = _markerWidgets.values.toList();
-    markerWidgets.value = newMarkerWidgets;
 
+    _markerWidgets[markerId] = markerWidget;
     _markers[markerId] = marker;
-    final newSet = <Marker>{};
-    newSet.addAll(_markers.values);
-    markers.value = newSet;
+
+    markerWidgets.value = _markerWidgets.values.toList();
+    markers.value = {..._markers.values};
+  }
+
+  ///Adds multiple [Marker]s and their associated [MarkerWidget]s to the [GoogleMap].
+  ///
+  ///*Note* [markerWidget] and [marker] should have the same [MarkerId]!
+  void bulkAddMarkerWidget(
+      Iterable<({MarkerWidget markerWidget, Marker marker})> newMarkers) {
+    for (var (:markerWidget, :marker) in newMarkers) {
+      final markerId = marker.markerId;
+      assert(!_markerWidgets.containsKey(markerId),
+          'Marker $markerId already exists! Use updateMarkerWidget instead.');
+      assert(markerWidget.markerId == marker.markerId,
+          'MarkerWidget and Marker do not have the same MarkerId!');
+      _markerWidgets[markerId] = markerWidget;
+      _markers[markerId] = marker;
+    }
+    markerWidgets.value = _markerWidgets.values.toList();
+    markers.value = {..._markers.values};
   }
 
   ///Removes the [Marker] and [MarkerWidget] associated with [markerId] from the [GoogleMap].
@@ -83,6 +99,27 @@ class MarkerWidgetsController {
 
     final newMarkerWidgetsList = _markerWidgets.values.toList();
     markerWidgets.value = newMarkerWidgetsList;
+  }
+
+  /// Removes multiple [Marker]s and their associated [MarkerWidget] from the [GoogleMap] using their [markerId]s
+  void bulkRemoveMarker(Iterable<MarkerId> markerIds) {
+    for (var markerId in markerIds) {
+      assert(_markers.keys.contains(markerId),
+          'MarkerId: ${markerId.toString()} not found in tracked markers!');
+      assert(_markerWidgets.keys.contains(markerId),
+          'MarkerId: ${markerId.toString()} not found in marker widgets!');
+      //stop any animations and remove the animation controller first
+      final animationController = _markerAnimationControllers[markerId];
+      if (animationController != null) {
+        animationController.stop();
+        animationController.dispose();
+        _markerAnimationControllers.remove(markerId);
+      }
+      _markers.remove(markerId);
+      _markerWidgets.remove(markerId);
+    }
+    markers.value = {..._markers.values};
+    markerWidgets.value = _markerWidgets.values.toList();
   }
 
   ///Returns the [Marker] associated with [markerId].
