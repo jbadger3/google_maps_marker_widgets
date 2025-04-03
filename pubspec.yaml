@@ -5,7 +5,7 @@ issue_tracker: https://github.com/jbadger3/google_maps_marker_widgets/issues?q=i
 topics:
   - google-maps-flutter
   - map
-version: 1.1.0
+version: 1.1.1
 
 environment:
   sdk: ^3.6.0

@@ -30,6 +30,7 @@ class MarkerWidgetsController {
     final deviceMarker = Marker(
         markerId: markerId,
         position: initialPosition,
+        zIndex: 10000000,
         anchor: Offset(0.5, 0.5));
     addMarkerWidget(
         markerWidget: MarkerWidget(
@@ -86,7 +87,7 @@ class MarkerWidgetsController {
     final animationController = _markerAnimationControllers[markerId];
     if (animationController != null) {
       animationController.stop();
-      animationController.dispose();
+      //the associated MarkerWidget will take care of disposal
       _markerAnimationControllers.remove(markerId);
     }
 
@@ -112,7 +113,7 @@ class MarkerWidgetsController {
       final animationController = _markerAnimationControllers[markerId];
       if (animationController != null) {
         animationController.stop();
-        animationController.dispose();
+        //the associated MarkerWidget will take care of disposal
         _markerAnimationControllers.remove(markerId);
       }
       _markers.remove(markerId);
@@ -190,8 +191,8 @@ class MarkerWidgetsController {
                   oldLatLang.longitude;
           final latLangStep = LatLng(latStep, lngStep);
 
-          final markerStep =
-              _markers[markerId]!.copyWith(positionParam: latLangStep);
+          final markerStep = _markers[markerId]!.copyWith(
+              positionParam: latLangStep, visibleParam: marker.visible);
           _markers[markerId] = markerStep;
           final newSet = <Marker>{};
           newSet.addAll(_markers.values
@@ -200,14 +201,17 @@ class MarkerWidgetsController {
           markers.value = newSet;
         }
         if (animationController.isCompleted) {
-          _markers[markerId] =
-              _markers[markerId]!.copyWith(positionParam: marker.position);
+          _markers[markerId] = _markers[markerId]!.copyWith(
+              positionParam: marker.position, visibleParam: marker.visible);
         }
       });
       await animationController.forward();
       animationController.reset();
     } else {
-      _markers[markerId] = marker;
+      _markers[markerId] = _markers[markerId]!.copyWith(
+          positionParam: marker.position,
+          visibleParam: marker.visible,
+          rotationParam: marker.rotation);
       final newSet = <Marker>{};
       newSet.addAll(_markers.values);
       markers.value = newSet;
